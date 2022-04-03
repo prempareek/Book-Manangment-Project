@@ -18,10 +18,10 @@ const review = async function (req, res) {
 
         let data = req.body;
 
-        let { bookId, rating, reviewedBy } = data
+        let { bookId, rating } = data
 
-        if (Object.keys(reviewedBy).length == 0)
-            return res.status(400).send({ status: false, msg: " ReviewedBy should be present" });
+        // if (Object.keys(reviewedBy).length == 0)
+        //     return res.status(400).send({ status: false, msg: " ReviewedBy should be present" });
 
         if (Object.keys(data).length == 0)
             return res.status(400).send({ status: false, msg: "PLEASE FILL THE BODY" });
@@ -83,19 +83,6 @@ const updateReview = async function (req, res) {
             return res.status(404).send({ status: false, msg: "review not found with thhis review id" })
         }
 
-        const { rating, reviewedBy } = body;
-        if (!rating) {
-            return res.status(400).send({ status: false, msg: "rating is required, please fill the rating " })
-        }
-        if (rating < 1)
-            return res.status(400).send({ status: false, msg: " Rating must be greater than 1" });
-        if (rating > 5)
-            return res.status(400).send({ status: false, msg: " Rating must be less than 5" });
-
-        if (!reviewedBy) {
-            return res.status(400).send({ status: false, msg: "reviewedBy is required " })
-        }
-
 
         let updatedata = req.body;
         let updatedReview = await ReviewModel.findOneAndUpdate({ _id: reviewId }, { rating: updatedata.rating, reviewedBy: updatedata.reviewedBy, review: updatedata.review }, { new: true, upsert: true });
@@ -132,7 +119,7 @@ const deleteReviewById = async function (req, res) {
             return res.status(404).send({ status: false, msg: "No such review exists" })
         }
 
-        return res.status(200).send({ status: true, msg: "Review deleted" })
+        return res.status(200).send({ msg: "Review deletion is successful" })
     }
     catch (error) {
         return res.status(500).send({ status: false, msg: "Error", error: error.message })

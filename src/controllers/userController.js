@@ -7,8 +7,7 @@ const { isValid , isValidTitle} = require("../isValid/valid.js")
 const createUser = async function (req, res) {
 
     try {
-        let x = req.query
-        if (Object.keys(x).length > 0) {
+        if (Object.keys(req.query).length > 0) {
             return res.status(400).send({ status: false, message: "please don't provide params " })
         }
 

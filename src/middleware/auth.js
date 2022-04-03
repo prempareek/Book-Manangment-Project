@@ -16,7 +16,7 @@ const authenticationUser = function (req, res, next) {
 
   }
   catch (error) {
-    res.send({ msg: error.message })
+    res.status(500).send({ msg: error.message })
   }
 }
 
@@ -32,12 +32,12 @@ const authorisationUser = async function (req, res, next) {
     let bookById = await BookModel.findOne({ _id: bookId, isDeleted: false }).select({ userId: 1 })
 
     if (authorisedUser !== bookById.userId.toString()) {
-      return res.status(401).send({ status: false, msg: "You are not an authorized person to make these changes" })
+      return res.status(403).send({ status: false, msg: "You are not an authorized person to make these changes" })
     }
     next();
   }
   catch (error) {
-    return res.send({ msg: error.message })
+    return res.status(500).send({ msg: error.message })
   }
 }
 
